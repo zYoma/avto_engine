@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% load bit %}
+
+{% block title %}Главная{% endblock %}
+{% block nav %}
+<form class="search-form" method="get" action="{% url 'search' %}">
+	<header id="header">
+    <div class="container-fluid">
+            <div class="row middle-xs">
+                <div class="col-xs-6 col-sm-2">
+                    <a id="logo" class="header-logo" href="/">
+                        {% include 'logo.svg' %}
+                    </a>
+                </div>
+                <div class="col-xs-6 col-sm-2 last-sm">
+                    <nav class="user header-user text-right">
+                        {% if user.is_authenticated %}
+                        <span class="dropdown header-user_link">
+                             <svg class="icon"><use href="#i-user"></svg>
+                                <span class="header-user_link-name">{{ user.username }}</span>
+                             <div class="dropdown-block">
+                            {% if user.is_staff %}
+                                <a class="text-bold" href="/admin">Админка</a>
+                                <a href="{% url 'upload' %}">Загрузить таблицу</a>
+                            {% endif %}
+                                <a href="{% url 'password_change' %}">Изменить пароль</a>
+                                <a href="{% url 'logout' %}">Выйти</a>
+                             </div>
+                        </span>
+                        {% else %}
+                            <a href="{% url 'login' %}">Войти</a> |
+                            <a href="{% url 'signup' %}">Регистрация</a>
+                        {% endif %}
+                    </nav>
+                </div>
+                <div class="col-xs-6 col-sm-3">
+                    <div class="search">
+                        <div class="form-group">
+                            <input class="form-control search-input{% if 'search' in pattern_dict %} input-mark{% endif %}" placeholder="Поиск" type="text" name="search" value="{% if 'search' in pattern_dict %}{{pattern_dict.search}}{% endif %}"/>
+                            <button class="btn-link"><svg class="icon"><use href="#i-search"/></svg></button class="btn-link">
+                            <input type="hidden" name="filter">
+                            <input type="hidden" name="sample">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-2">
+                    <select class="js-input" name="sort">
+                        <option value="">Сортировка</option>
+                        <option value="price_asc">ᐃ&nbsp;&nbsp;Цена без навеса</option>
+                        <option value="price_desc">ᐁ&nbsp;&nbsp;Цена без навеса</option>
+                        <option value="price_2_asc">ᐃ&nbsp;&nbsp;Цена с навесом</option>
+                        <option value="price_2_desc">ᐁ&nbsp;&nbsp;Цена с навесом</option>
+                        <option value="reliability_asc">ᐃ&nbsp;&nbsp;Надежность поставки</option>
+                        <option value="reliability_desc">ᐁ&nbsp;&nbsp;Надежность поставки</option>
+                        <option value="date_placement_asc">ᐃ&nbsp;&nbsp;Дата размещения</option>
+                        <option value="date_placement_desc">ᐁ&nbsp;&nbsp;Дата размещения</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-3">
+                    <div class="form-group checkbox-field">
+                        <input class="js-input" id="reliability_color" type="checkbox" name="reliability_color"> 
+                        <label class="checkbox-label" for="reliability_color">Подсвечивать надежность поставки</label>
+                    </div>
+                </div>
+            </div>
+    </div>
+</header>
+    
+{% endblock %}
+
+
+{% block content %}
+
+
+{% if user.is_staff or request.GET.search %}
+
+<section class="table-responsive">	
+	<table class="js-table-resize">
+		<thead>
+		{% if user.is_authenticated %}
+		<tr>
+			{% if group %}<th class="td-num">№</th>{% endif %}
+			{% if group.is_model_dvs %}<th class="td-model_dvs"><div class="td-title">Модель ДВС</div></th>{% endif %}
+			{% if group.is_link %}<th class="td-link"><div class="td-title">Ссылка</div></th>{% endif %}
+			{% if group.is_price_without_c %}<th class="td-price_without"><div class="td-title">Цена (₽)<span class="small-text">без навеса</span></div></th>{% endif %}
+			{% if group.is_price_with_c %}<th class="td-price_with"><div class="td-title">Цена (₽)<span class="small-text">с навесом</span></div></th>{% endif %}
+			{% if group.is_currency %}<th class="td-currency"><div class="td-title">Валюта</div></th>{% endif %}
+			{% if group.is_firm %}<th class="td-firm"><div class="td-title">Фирма</div></th>{% endif %}
+			{% if group.is_mark %}<th class="td-mark"><div class="td-title">Марка</div></th>{% endif %}
+			{% if group.is_model %}<th class="td-model"><div class="td-title">Модель</div></th>{% endif %}
+			{% if group.is_body %}<th class="td-body"><div class="td-title">Кузов</div></th>{% endif %}
+			{% if group.is_year %}<th class="td-year"><div class="td-title">Год</div></th>{% endif %}
+			{% if group.is_drive_unit %}<th class="td-unit"><div class="td-title">Привод</div></th>{% endif %}
+			{% if group.is_transmission %}<th class="td-transmission"><div class="td-title">КПП</div></th>{% endif %}
+			{% if group.is_volume %}<th class="td-volume"><div class="td-title">Объем</div></th>{% endif %}
+			{% if group.is_horsepower %}<th class="td-horsepower"><div class="td-title">Л.С.</div></th>{% endif %}
+			{% if group.is_fuel %}<th class="td-fuel"><div class="td-title">Топливо</div></th>{% endif %}
+			{% if group.is_name %}<th class="td-name"><div class="td-title">Наименование</div></th>{% endif %}
+			{% if group.is_information %}<th class="td-info"><div class="td-title">Информация</div></th>{% endif %}
+			{% if group.is_number_oem %}<th class="td-oem"><div class="td-title">Номер ДВС</div></th>{% endif %}
+			{% if group.is_number_dvs %}<th class="td-dvs"><div class="td-title">Номер ОЕМ</div></th>{% endif %}
+			{% if group.is_analog %}<th class="td-analog"><div class="td-title">Аналог</div></th>{% endif %}
+			{% if group.is_vin_code %}<th class="td-vin"><div class="td-title">VIN код</div></th>{% endif %}
+			{% if group.is_reliability %}<th class="td-reliability"><div class="td-title">Надежность поставки</div></th>{% endif %}
+            {% if group.is_date_placement %}<th class="td-is_date_placement"><div class="td-title">Дата размещения</div></th>{% endif %}
+		</tr>
+			{% if group_name and group_name != 'user' %}
+				{% include 'table/search_row.html' with g=group %}
+	        {% endif %}
+        {% else %} 
+		<tr>
+			<th class="td-num">№</th>
+			{% if guest_permission.is_model_dvs %}<th class="td-model_dvs"><div class="td-title">Модель ДВС</div></th>{% endif %}
+			{% if guest_permission.is_link %}<th class="td-link"><div class="td-title">Ссылка</div></th>{% endif %}
+			{% if guest_permission.is_price_without_c %}<th class="td-price_without"><div class="td-title">Цена (₽)<span class="small-text">без навеса</span></div></th>{% endif %}
+			{% if guest_permission.is_price_with_c %}<th class="td-price_with"><div class="td-title">Цена (₽)<span class="small-text">с навесом</span></div></th>{% endif %}
+			{% if guest_permission.is_currency %}<th class="td-currency"><div class="td-title">Валюта</div></th>{% endif %}
+			{% if guest_permission.is_firm %}<th class="td-firm"><div class="td-title">Фирма</div></th>{% endif %}
+			{% if guest_permission.is_mark %}<th class="td-mark"><div class="td-title">Марка</div></th>{% endif %}
+			{% if guest_permission.is_model %}<th class="td-model"><div class="td-title">Модель</div></th>{% endif %}
+			{% if guest_permission.is_body %}<th class="td-body"><div class="td-title">Кузов</div></th>{% endif %}
+			{% if guest_permission.is_year %}<th class="td-year"><div class="td-title">Год</div></th>{% endif %}
+			{% if guest_permission.is_drive_unit %}<th class="td-unit"><div class="td-title">Привод</div></th>{% endif %}
+			{% if guest_permission.is_transmission %}<th class="td-transmission"><div class="td-title">КПП</div></th>{% endif %}
+			{% if guest_permission.is_volume %}<th class="td-volume"><div class="td-title">Объем</div></th>{% endif %}
+			{% if guest_permission.is_horsepower %}<th class="td-horsepower"><div class="td-title">Л.С.</div></th>{% endif %}
+			{% if guest_permission.is_fuel %}<th class="td-fuel"><div class="td-title">Топливо</div></th>{% endif %}
+			{% if guest_permission.is_name %}<th class="td-name"><div class="td-title">Наименование</div></th>{% endif %}
+			{% if guest_permission.is_information %}<th class="td-info"><div class="td-title">Информация</div></th>{% endif %}
+			{% if guest_permission.is_number_oem %}<th class="td-oem"><div class="td-title">Номер ДВС</div></th>{% endif %}
+			{% if guest_permission.is_number_dvs %}<th class="td-dvs"><div class="td-title">Номер ОЕМ</div></th>{% endif %}
+			{% if guest_permission.is_analog %}<th class="td-analog"><div class="td-title">Аналог</div></th>{% endif %}
+			{% if guest_permission.is_vin_code %}<th class="td-vin"><div class="td-title">VIN код</div></th>{% endif %}
+			{% if guest_permission.is_reliability %}<th class="td-reliability"><div class="td-title">Надежность поставки</div></th>{% endif %}
+            {% if guest_permission.is_date_placement %}<th class="td-is_date_placement"><div class="td-title">Дата размещения</div></th>{% endif %}
+		</tr>
+
+	{# 	{% include 'table/search_row.html' with g=guest_permission %} #}
+
+		{% endif %}
+	</thead>
+
+
+	<tbody>
+		{% for string in table %}
+		{% if user.is_authenticated %}
+		<tr class="rating-row rating-{{string.reliability}}">
+			<td class="td-num">{{ string.id }}</td>
+            {% if group.is_model_dvs %}<td class="td-num">{{string.model_dvs|default:"-"}}</td>{% endif %}
+			{% if group.is_link %}<td class="td-link"><a href="{{string.link}}" target="_blank">{{string.link|default:"-"}}</a></td>{% endif %}
+			{% if group.is_price_without_c %}<td class="td-price_without_c">{{string.price_without_c|default:"-"}}</td>{% endif %}
+			{% if group.is_price_with_c %}<td class="td-price_with_c">{{string.price_with_c|default:"-"}}</td>{% endif %}
+			{% if group.is_currency %}<td class="td-currency">{{string.currency|default:"-"}}</td>{% endif %}
+			{% if group.is_firm %}<td class="td-firm">{{string.firm|default:"-"}}</td>{% endif %}
+			{% if group.is_mark %}<td class="td-mark">{{string.mark|default:"-"}}</td>{% endif %}
+			{% if group.is_model %}<td class="td-model">{{string.model|default:"-"}}</td>{% endif %}
+			{% if group.is_body %}<td class="td-body">{{string.body|default:"-"}}</td>{% endif %}
+			{% if group.is_year %}<td class="td-year">{{string.year|default:"-"}}</td>{% endif %}
+			{% if group.is_drive_unit %}<td class="td-drive_unit">{{string.drive_unit|default:"-"}}</td>{% endif %}
+			{% if group.is_transmission %}<td class="td-transmission">{{string.transmission|default:"-"}}</td>{% endif %}
+			{% if group.is_volume %}<td class="td-volume">{{string.volume|default:"-"}}</td>{% endif %}
+			{% if group.is_horsepower %}<td class="td-horsepower">{{string.horsepower|default:"-"}}</td>{% endif %}
+			{% if group.is_fuel %}<td class="td-fuel">{{string.fuel|default:"-"}}</td>{% endif %}
+			{% if group.is_name %}<td class="td-name">{{string.name|default:"-"}}</td>{% endif %}
+			{% if group.is_information %}<td class="td-information">{{string.information|default:"-"}}</td>{% endif %}
+			{% if group.is_number_oem %}<td class="td-number_oem">{{string.number_oem|default:"-"}}</td>{% endif %}
+			{% if group.is_number_dvs %}<td class="td-number_dvs">{{string.number_dvs|default:"-"}}</td>{% endif %}
+			{% if group.is_analog %}<td class="td-analog">{{string.analog|default:"-"}}</td>{% endif %}
+			{% if group.is_vin_code %}<td class="td-vin_code">{{string.vin_code|default:"-"}}</td>{% endif %}
+			{% if group.is_reliability %}<td class="td-reliability">{{string.reliability}}</td>{% endif %}
+			{% if group.is_date_placement %}<td class="td-date_placement">{{string.date_placement|default:"-"}}</td>{% endif %}
+		</tr>
+
+		{% else %} 
+	   	<tr class="rating-row rating-{{string.reliability}}">
+			<td class="td-num">{{ string.id }}</td>
+            {% if guest_permission.is_model_dvs %}<td class="td-num">{{string.model_dvs|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_link %}<td class="td-link"><a href="{{string.link}}" target="_blank">{{string.link|default:"-"}}</a></td>{% endif %}
+			{% if guest_permission.is_price_without_c %}<td class="td-price_without_c">{{string.price_without_c|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_price_with_c %}<td class="td-price_with_c">{{string.price_with_c|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_currency %}<td class="td-currency">{{string.currency|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_firm %}<td class="td-firm">{{string.firm|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_mark %}<td class="td-mark">{{string.mark|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_model %}<td class="td-model">{{string.model|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_body %}<td class="td-body">{{string.body|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_year %}<td class="td-year">{{string.year|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_drive_unit %}<td class="td-drive_unit">{{string.drive_unit|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_transmission %}<td class="td-transmission">{{string.transmission|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_volume %}<td class="td-volume">{{string.volume|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_horsepower %}<td class="td-horsepower">{{string.horsepower|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_fuel %}<td class="td-fuel">{{string.fuel|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_name %}<td class="td-name">{{string.name|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_information %}<td class="td-information">{{string.information|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_number_oem %}<td class="td-number_oem">{{string.number_oem|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_number_dvs %}<td class="td-number_dvs">{{string.number_dvs|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_analog %}<td class="td-analog">{{string.analog|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_vin_code %}<td class="td-vin_code">{{string.vin_code|default:"-"}}</td>{% endif %}
+			{% if guest_permission.is_reliability %}<td class="td-reliability">{{string.reliability}}</td>{% endif %}
+			{% if guest_permission.is_date_placement %}<td class="td-date_placement">{{string.date_placement|default:"-"}}</td>{% endif %}
+		</tr>
+        {% endif %}
+		{% endfor %}
+	</tbody>
+	</table>
+</section>
+
+	{% if request.GET.search %}
+	<section class="bottom-block">
+		<div class="container-fluid">
+			<div class="row middle-xs">
+				<div class="col-xs-12 col-sm-4 text-center">
+					<a class="btn" href="/">Сбросить</a>
+
+				</div>
+				<div class="col-xs-6 col-sm-4 first-sm">
+					{% include 'table/pag.html' %}
+				</div>
+				<div class="col-xs-6 col-sm-4 text-right"> 
+					<div class="row middle-xs">
+						<div class="col-xs-12 col-sm-8 col-md-9">
+							{% if price %}{% if  group.is_price_without_c and group.is_price_with_c or guest_permission.is_price_without_c and guest_permission.is_price_with_c %}
+								<span class="total-price text-nowrap">Мин: <span class="text-bold">{{price.min_price|get_bit_depth}}₽</span></span>  
+								<span class="total-price text-nowrap">Ср: <span class="text-bold">{{price.avg_price|get_bit_depth}}₽</span></span>
+								<span class="total-price text-nowrap">Макс: <span class="text-bold">{{price.max_price|get_bit_depth}}₽</span></span>
+							{% endif %}{% endif %}
+						</div>
+						<div class="col-xs-12 col-sm-4 col-md-3 text-second">
+							{{ table.end_index  }} из {{ table.paginator.count }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	{% endif %}
+</form>
+
+{% else %}
+{% if index_template %}{{index_template|safe}}{% endif %}
+{% endif %}
+
+ {% endblock content %}

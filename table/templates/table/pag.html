@@ -1,0 +1,52 @@
+ {% if is_paginator %}
+    
+ 
+  <nav class="pagination-block" aria-label="...">
+    <ul class="pagination">
+       <li class="page-item">
+        {% if not prev_url %}
+        	<span class="page-link page-link_disable">Первая</span>
+        {% else %} 
+        	<a class="page-link" href="?page=1&{{parameters}}">Первая</a> 
+        {% endif %}
+      </li>
+      <li class="page-item">
+      	{% if not prev_url %}
+       		 <span class="page-link page-link_disable"><svg class="icon arrow-left"><use href="#i-chevron"/></svg></span>
+        {% else %}
+       		 <a class="page-link" href="{{prev_url}}&{{parameters}}" tabindex="-1" aria-disabled="true">
+       		 	<svg class="icon arrow-left"><use href="#i-chevron"/></svg></a>
+
+      	 {% endif %}
+      </li>
+    
+    
+      
+
+      {% for n in table.paginator.page_range  %}
+      {% if table.number == n %}
+          <li class="page-item active" aria-current="page">
+        <a class="page-link" href="?page={{n}}&{{parameters}}">{{n}}</a>
+      </li>
+      {% elif  n > table.number|add:-3 and n < table.number|add:3 %}
+        <li class="page-item"><a class="page-link" href="?page={{n}}&{{parameters}}">{{n}}</a></li> 
+        {% endif %}       
+      {% endfor %}
+      <li class="page-item {% if not next_url or table.number|add:2 == page_end %} disabled {% endif %}">
+        <a class="page-link" href="?page={{page_end}}&{{parameters}}">({{page_end}})</a>
+      </li>
+      <li class="page-item">
+      	{% if not next_url %}
+        <span class="page-link page-link_disable">
+        	<svg class="icon arrow-right"><use href="#i-chevron"/></svg>
+        </span>
+        {% else %}
+        <a class="page-link" href="{{next_url}}&{{parameters}}">
+        	<svg class="icon arrow-right"><use href="#i-chevron"/></svg>
+        </a>
+        {% endif %}
+      </li>
+      
+    </ul>
+  </nav>
+   {% endif %} 

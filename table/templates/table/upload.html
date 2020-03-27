@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Обновление таблицы{% endblock %}
+
+{% block content %}
+
+  {% if user.is_staff %}
+    <p>Таблица должны быть в формате cvs. 23 столбца в соответствии с БД. Кодировка - cp1251. Разделитель - ; </p>
+    <form action ="{% url 'upload' %}" method = "post"  enctype = "multipart/form-data">
+      {% csrf_token %}
+      <input type="file" id="upload-btn" name = "table" value="Загрузить таблицу" />
+      <button type="submit" class="btn btn-primary">Загрузить</button>&nbsp;&nbsp;
+    </form>
+  {% endif %}
+
+{% endblock content %}

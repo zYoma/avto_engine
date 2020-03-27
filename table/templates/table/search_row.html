@@ -1,0 +1,272 @@
+
+
+		<tr class="search-row">
+			<th class="td-num"></th>
+			{% if g.is_model_dvs %}<th class="td-model_dvs">
+
+				<div class="form-group">
+					{% if 'model_dvs' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="model_dvs" value="{{ pattern_dict.model_dvs }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="model_dvs"/>
+					{% endif %}
+					<button class="btn-link" type="submit"><svg class="icon"><use href="#i-search"/></svg></button>
+				    
+				</div>
+				
+			</th>{% endif %}
+			{% if g.is_link %}<th class="td-link">
+
+				<div class="form-group">
+					{% if 'link' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="link" value="{{ pattern_dict.link }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="link"/>
+					{% endif %}
+					<button class="btn-link"><svg class="icon"><use href="#i-search"/></svg></button class="btn-link">
+				</div>
+
+			</th>{% endif %}
+			{% if g.is_price_without_c %}
+			<th class="td-price_without_c">
+				<div class="form-group input-group">
+					{% if 'price_min' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="number" name="price_min" value="{{ pattern_dict.price_min }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="number" name="price_min"/>
+					{% endif %}
+					<span class="text-second">—</span> 
+					{% if 'price_max' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="number" name="price_max" value="{{ pattern_dict.price_max }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="number" name="price_max"/>
+					{% endif %}
+
+					<button class="btn-link" type="submit"><svg class="icon"><use href="#i-refresh"/></svg></button>
+				</div>
+			</th>
+			{% endif %}
+			{% if g.is_price_with_c %}
+			<th class="td-price_with_c">
+				<div class="form-group input-group">
+					{% if 'price_2_min' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="number" name="price_2_min" value="{{ pattern_dict.price_2_min }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="number" name="price_2_min"/>
+					{% endif %}
+					<span class="text-second">—</span> 
+					{% if 'price_2_max' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="number" name="price_2_max" value="{{ pattern_dict.price_2_max }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="number" name="price_2_max"/>
+					{% endif %}
+
+					<button class="btn-link" type="submit"><svg class="icon"><use href="#i-refresh"/></svg></button>
+				</div>
+			</th>
+			{% endif %}
+			{% if g.is_currency %}<th></th>{% endif %}
+			
+			{% if g.is_firm %}<th class="td-firm">
+
+				<div class="form-group">
+
+					{% if 'firm' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="firm" value="{{ pattern_dict.firm }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="firm"/>
+					{% endif %}
+
+					<button class="btn-link"><svg class="icon"><use href="#i-search"/></svg></button class="btn-link">
+				</div>
+
+			</th>{% endif %}
+			{% if g.is_mark %}<th class="td-mark">
+
+				<div class="form-group">
+					{% if 'mark' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="mark" value="{{ pattern_dict.mark }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="mark"/>
+					{% endif %}
+					<button class="btn-link" type="submit"><svg class="icon"><use href="#i-search"/></svg></button>
+				</div>
+
+			</th>{% endif %}
+			{% if g.is_model %}<th class="td-model">
+
+				<div class="form-group">
+					{% if 'model' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="model" value="{{ pattern_dict.model }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="model"/>
+					{% endif %}
+					<button class="btn-link" type="submit"><svg class="icon"><use href="#i-search"/></svg></button>
+				</div>
+				
+			</th>{% endif %}
+			{% if g.is_body %}<th class="td-body">
+					<div class="form-group">
+					{% if 'body' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="body" value="{{ pattern_dict.body }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="body"/>
+					{% endif %}
+					<button class="btn-link" type="submit"><svg class="icon"><use href="#i-search"/></svg></button>
+				</div>
+				
+			</th>{% endif %}
+			{% if g.is_year %}<th class="td-year">
+				<div class="form-group">
+					{% if 'year' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="year" value="{{ pattern_dict.year }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="year"/>
+					{% endif %}
+					<button class="btn-link" type="submit"><svg class="icon"><use href="#i-search"/></svg></button>
+				</div>
+			</th>{% endif %}
+			{% if g.is_drive_unit %}<th class="td-drive_unit">
+				
+				<div class="form-group">
+
+					{% if 'drive_unit' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="drive_unit" value="{{ pattern_dict.drive_unit }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="drive_unit"/>
+					{% endif %}
+
+					<button class="btn-link"><svg class="icon"><use href="#i-search"/></svg></button class="btn-link">
+				</div>
+			</th>{% endif %}
+			{% if g.is_transmission %}
+			<th class="td-transmission">
+				<select class="js-input" name="transmission">
+					<option value="">Все</option>
+					{% for transmission in transmission_list %}
+			          <option value="{{transmission}}">{{ transmission }}</option>
+			          {% endfor %}
+				</select>
+			</th>
+			{% endif %}
+			{% if g.is_volume %}
+				<th class="td-volume">
+
+				<select class="js-input" name="volume">
+			          <option value="">Все</option>
+					{% for value in volums_list %}
+			          <option value="{{value}}">{{ value }}</option>
+			          {% endfor %}
+			      </select>
+				</th>
+			{% endif %}
+			{% if g.is_horsepower %}
+			<th class="td-horsepower">
+			</th>{% endif %}
+			{% if g.is_fuel %}
+			<th class="td-fuel">
+				<select class="js-input" name="fuel">
+					    <option value="">Все</option>
+					{% for fuel in fuel_list %}
+			          <option value="{{fuel}}">{{ fuel }}</option>
+			          {% endfor %}
+				</select>
+			</th>{% endif %}
+			{% if g.is_name %}<th class="td-name">
+				<div class="form-group">
+
+					{% if 'name' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="name" value="{{ pattern_dict.name }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="name"/>
+					{% endif %}
+
+					<button class="btn-link"><svg class="icon"><use href="#i-search"/></svg></button class="btn-link">
+				</div>
+				</th>{% endif %}
+			{% if g.is_information %}<th class="td-information">
+				<div class="form-group">
+
+					{% if 'information' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="information" value="{{ pattern_dict.information }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="information"/>
+					{% endif %}
+
+					<button class="btn-link"><svg class="icon"><use href="#i-search"/></svg></button class="btn-link">
+				</div>
+			</th>{% endif %}
+			{% if g.is_number_oem %}<th class="td-number_oem">
+				<div class="form-group">
+					
+					{% if 'number_oem' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="number_oem" value="{{ pattern_dict.number_oem }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="number_oem"/>
+					{% endif %}
+
+					<button class="btn-link"><svg class="icon"><use href="#i-search"/></svg></button class="btn-link">
+				</div>
+			</th>{% endif %}
+			{% if g.is_number_dvs %}<th class="td-number_dvs">
+				<div class="form-group">
+					
+					{% if 'number_dvs' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="number_dvs" value="{{ pattern_dict.number_dvs }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="number_dvs"/>
+					{% endif %}
+
+					<button class="btn-link"><svg class="icon"><use href="#i-search"/></svg></button class="btn-link">
+				</div>
+			</th>{% endif %}
+			{% if g.is_analog %}<th class="td-analog">
+				<div class="form-group">
+					
+					{% if 'analog' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="analog" value="{{ pattern_dict.analog }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="analog"/>
+					{% endif %}
+
+					<button class="btn-link"><svg class="icon"><use href="#i-search"/></svg></button class="btn-link">
+				</div>
+			</th>{% endif %}
+			{% if g.is_vin_code %}<th class="td-vin_code">
+				<div class="form-group">
+					
+					{% if 'vin_code' in pattern_dict %}
+					<input class="form-control js-input filter-input input-mark" type="text" name="vin_code" value="{{ pattern_dict.vin_code }}"/>
+					{% else %}
+					<input class="form-control js-input filter-input" type="text" name="vin_code"/>
+					{% endif %}
+
+					<button class="btn-link"><svg class="icon"><use href="#i-search"/></svg></button class="btn-link">
+				</div>
+			</th>{% endif %}
+
+			{% if g.is_reliability %}
+				<th class="td-reliability">
+					<div class="form-group input-group">
+						{% if 'min_reliability' in pattern_dict %}
+						<input class="form-control js-input filter-input input-mark" type="number" name="min_reliability" value="{{ pattern_dict.min_reliability }}"/>
+						{% else %}
+						<input class="form-control js-input filter-input" type="number" name="min_reliability"/>
+						{% endif %}
+						<span class="text-second">—</span> 
+						{% if 'max_reliability' in pattern_dict %}
+						<input class="form-control js-input filter-input input-mark" type="number" name="max_reliability" value="{{ pattern_dict.max_reliability }}"/>
+						{% else %}
+						<input class="form-control js-input filter-input" type="number" name="max_reliability"/>
+						{% endif %}
+
+						<button class="btn-link" type="submit"><svg class="icon"><use href="#i-refresh"/></svg></button>
+					</div>
+				</th>
+			{% endif %}
+
+			{% if g.is_date_placement %}
+				<th class="td-date_placement">
+				</th>
+			{% endif %}
+		</tr>

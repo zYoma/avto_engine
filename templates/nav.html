@@ -1,0 +1,64 @@
+
+<header id="header">
+    <div class="container-fluid">
+        <form class="search-form" method="get" action="{% url 'search' %}">
+            <div class="row middle-xs">
+                <div class="col-xs-6 col-sm-2">
+                    <a id="logo" class="header-logo" href="/">
+                        {% include 'logo.svg' %}
+                    </a>
+                </div>
+                <div class="col-xs-6 col-sm-2 last-sm">
+                    <nav class="user header-user text-right">
+                        {% if user.is_authenticated %}
+                        <span class="dropdown header-user_link">
+                             <svg class="icon"><use href="#i-user"></svg>
+                                <span class="header-user_link-name">{{ user.username }}</span>
+                             <div class="dropdown-block">
+                            {% if user.is_staff %}
+                                <a class="text-bold" href="/admin">Админка</a>
+                                <a href="{% url 'upload' %}">Загрузить таблицу</a>
+                            {% endif %}
+                                <a href="{% url 'password_change' %}">Изменить пароль</a>
+                                <a href="{% url 'logout' %}">Выйти</a>
+                             </div>
+                        </span>
+                        {% else %}
+                            <a href="{% url 'login' %}">Войти</a> |
+                            <a href="{% url 'signup' %}">Регистрация</a>
+                        {% endif %}
+                    </nav>
+                </div>
+                <div class="col-xs-6 col-sm-3">
+                    <div class="search">
+                        <div class="form-group">
+                            <input class="form-control {% if 'search' in pattern_dict %}input-mark {% endif %}js-input" placeholder="Поиск" type="text" name="search" value="{% if 'search' in pattern_dict %}{{pattern_dict.search}}{% endif %}"/>
+                            <button class="btn-link"><svg class="icon"><use href="#i-search"/></svg></button class="btn-link">
+                            <input type="hidden" name="filter">
+                            <input type="hidden" name="sample">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-3 col-md-2">
+                    <select class="js-input" name="sort">
+                        <option value="">Сортировка</option>
+                        <option value="price_asc">ᐃ&nbsp;&nbsp;Цена без навеса</option>
+                        <option value="price_desc">ᐁ&nbsp;&nbsp;Цена без навеса</option>
+                        <option value="price_2_asc">ᐃ&nbsp;&nbsp;Цена с навесом</option>
+                        <option value="price_2_desc">ᐁ&nbsp;&nbsp;Цена с навесом</option>
+                        <option value="reliability_asc">ᐃ&nbsp;&nbsp;Надежность поставки</option>
+                        <option value="reliability_desc">ᐁ&nbsp;&nbsp;Надежность поставки</option>
+                        <option value="date_placement_asc">ᐃ&nbsp;&nbsp;Дата размещения</option>
+                        <option value="date_placement_desc">ᐁ&nbsp;&nbsp;Дата размещения</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-2 col-md-3">
+                    <div class="form-group checkbox-field">
+                        <input class="js-input" id="reliability_color" type="checkbox" name="reliability_color"> 
+                        <label class="checkbox-label" for="reliability_color">Подсвечивать надежность поставки</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</header>
